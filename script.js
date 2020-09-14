@@ -13,7 +13,6 @@ function Book(title, author, numPages, read) {
 // default book card 
 let defaultBook = new Book("Another Book About Cats", "CatAuthor2", 420);
 myLibrary.push(defaultBook);
-console.log(myLibrary);
 
 
 function addBookToLibrary() {
@@ -162,12 +161,47 @@ displayBook();
 
 // action buttons interaction 
 
-// add book 
+// toggle book read button 
+function toggleRead(e) {
+    // on click,
+
+    // remove tooltip 
+    let span = e.target.children[0]; 
+
+    let newSpan = document.createElement("span");
+    newSpan.className = "tooltiptext";
+    newSpan.textContent = "Toggle read";
+
+    if (!e.target.classList.contains("toggle-read-on")) {
+        span.parentNode.removeChild(span);
+        e.target.classList.remove("toggle-read-off");
+        e.target.classList.add("toggle-read-on");
+    } else {
+        setTimeout(function () {
+            e.target.classList.remove("toggle-read-on");
+            e.target.classList.add("toggle-read-off");
+            e.target.appendChild(newSpan);
+        }, 300);
+    }
+}
+ 
+let checkButtons = document.getElementsByClassName("check-read");
+
+for (i = 0; i < checkButtons.length; i++) {
+    checkButtons[i].addEventListener("click", toggleRead);
+}
 
 
-// mark as read 
+// remove book function 
+function removeBookCard(e) {
+    let bookCard = e.target.parentNode.parentNode.parentNode;
+    bookCard.parentNode.removeChild(bookCard);
+}
 
 
+// remove book button
+let removeButtons = document.getElementsByClassName("remove");
 
-
-// remove 
+for (i = 0; i < removeButtons.length; i++) {
+    removeButtons[i].addEventListener("click", removeBookCard);
+}

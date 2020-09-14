@@ -38,6 +38,7 @@ h1 {
     letter-spacing: 1px;
     box-shadow: 0 5px 1px -1px #D3D3D3;
     outline: none;
+    cursor: pointer;
 }
 
 .add-book:hover {
@@ -103,6 +104,21 @@ h1 {
     color: #9e9e9e;
     outline: none;
     position: relative;
+    cursor: pointer;
+}
+
+.check-read:hover {
+    color: #ffb734;
+    transform: scale(1.15);
+}
+
+.toggle-read-on {
+    color: #ffb734;
+    transform: scale(1.08);
+}
+
+.toggle-read-off {
+    color: #9e9e9e;
 }
 
 .tooltiptext {
@@ -132,20 +148,18 @@ h1 {
   border-color: #ffc04d transparent transparent transparent;
 }
 
+
 .fa-check-circle:hover .tooltiptext {
   visibility: visible;
 }
 
-.check-read:hover {
-    color: #ffb734;
-    transform: scale(1.15);
-}
 
 .remove {
     margin-top: 10px;
     margin-right: 10px;
     color: #9e9e9e;
     outline: none;
+    cursor: pointer;
 }
 
 .remove:hover {
