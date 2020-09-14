@@ -6,21 +6,37 @@ function Book(title, author, numPages, read) {
     this.title = title;
     this.author = author;
     this.numPages = numPages; 
-    this.read = false;
+    this.read = read;
 }
 
+function addBookToLibrary(e) {
+    e.preventDefault();
 
-// default book card 
-let defaultBook = new Book("Another Book About Cats", "CatAuthor2", 420);
-myLibrary.push(defaultBook);
-
-
-function addBookToLibrary() {
     // take user input 
+    let userBookTitle = document.getElementById("book-title").value;
+
+    let userBookAuthor = document.getElementById("book-author").value;
+    let userBookPages = document.getElementById("book-pages").value;
+
+    // get radio input 
+    let bookRead = false;
+    let radioInput = document.getElementById("yes");
+    if (radioInput.checked == true) {
+        bookRead = true;
+    } 
 
     // create a new Book object with those input values 
+    let newUserBook = new Book(userBookTitle, userBookAuthor, userBookPages, bookRead);
 
     // store new Book object into myLibrary array
+    myLibrary.push(newUserBook);
+
+    // close modal window when submit is clicked 
+    setTimeout(function () {
+        closeModal();
+    }, 300);
+    
+    displayBook();
 }
 
 // helper for addActionButtons
@@ -33,7 +49,7 @@ function addReadBtn() {
     checkIcon.className = "fas fa-check-circle";
 
     let tooltip = document.createElement("span");
-    tooltip.textContent = "Mark as read";
+    tooltip.textContent = "Toggle read";
     tooltip.className = "tooltiptext";
 
     checkIcon.appendChild(tooltip);
@@ -55,7 +71,6 @@ function addRemoveBtn() {
 
     return removeBtn;
 }
-
 
 // add action buttons to bookCard
 function addActionButtons(div) {
@@ -121,7 +136,6 @@ function addPages(pageNum) {
     return pagesDiv;
 }
 
-
 // turn Book objects into cards and display them
 function displayBook() {
     let mainContainer = document.getElementById("main-container");
@@ -155,8 +169,6 @@ function displayBook() {
         mainContainer.appendChild(bookCard);
     }
 }
-
-displayBook();
 
 
 // action buttons interaction 
@@ -199,9 +211,47 @@ function removeBookCard(e) {
 }
 
 
-// remove book button
+// remove book card button
 let removeButtons = document.getElementsByClassName("remove");
 
 for (i = 0; i < removeButtons.length; i++) {
     removeButtons[i].addEventListener("click", removeBookCard);
 }
+
+// modal action
+let modal = document.getElementById("modal");
+
+// modal button 
+let modalBtn = document.getElementById("add-book-btn");
+
+// cancel modal button 
+let cancelBtn = document.getElementById("cancel-add-book");
+
+function openModal() {
+    modal.style.display = "block";
+    styleInputField();
+    let form = document.getElementById("add-book-form");
+    form.addEventListener("submit", addBookToLibrary);
+}
+
+function closeModal() {
+    modal.style.display = "none";
+}
+
+modalBtn.addEventListener("click", openModal);
+
+cancelBtn.addEventListener("click", closeModal);
+
+// style input field
+function styleInputField() {
+    let inputFields = document.getElementsByClassName("text-input");
+    for (i = 0; i < inputFields.length; i++) {
+        inputFields[i].addEventListener("click", clearField);
+    }
+}
+
+function clearField(e) {
+    e.target.style.color = "black";
+}
+
+console.log(myLibrary);
