@@ -1,6 +1,23 @@
 // book objects are going to be stored in myLibrary array
 let myLibrary = [];
 
+let mainContainer = document.getElementById("main-container");
+mainContainer.addEventListener("click", function(e) {
+    if (e.target.classList.contains("fa-times")) {
+        let currentBookCard = e.target.parentElement.parentElement.parentElement;
+        let arrIndex = (currentBookCard.dataset.indexNumber);
+        
+        myLibrary.splice(arrIndex, 1);
+        mainContainer.removeChild(currentBookCard);
+
+        // REASSIGN ARRAY INDEX VALUES AFTER DELETING
+        let bookCards = mainContainer.children;
+        for (i = 0; i < bookCards.length; i++) {
+            bookCards[i].dataset.indexNumber = i;
+        }
+    }
+});
+
 // Book constructor
 function Book(title, author, numPages, read) {
     this.title = title;
@@ -30,13 +47,50 @@ function addBookToLibrary(e) {
 
     // store new Book object into myLibrary array
     myLibrary.push(newUserBook);
+    
+    // create data index for new book 
+    let dataIndex = myLibrary.length - 1;
+
+    displayBook(userBookTitle, userBookAuthor, userBookPages, bookRead, dataIndex);
+
 
     // close modal window when submit is clicked 
     setTimeout(function () {
         closeModal();
     }, 300);
-    
-    displayBook();
+
+
+}
+
+// turn Book objects into cards and display them
+function displayBook(userTitle, userAuthor, userPages, bookRead, dataIndex) {
+
+    // turn objects in myLibrary array into cards
+    // create a new div with class of book-card
+    let bookCard = document.createElement("div");
+    bookCard.className = "book-card";
+
+    // add action buttons to bookCard 
+    let actionBtnDiv = addActionButtons();
+
+    // add book info to bookCard
+    let title = addTitle(userTitle);
+    let byWord = addByWord();
+    let author = addAuthor(userAuthor);
+    let pages = addPages(userPages);
+
+
+    // append everything together
+    bookCard.appendChild(actionBtnDiv);
+    bookCard.appendChild(title);
+    bookCard.appendChild(byWord);
+    bookCard.appendChild(author);
+    bookCard.appendChild(pages);
+    mainContainer.appendChild(bookCard);
+
+    // set data attribute to bookcards
+    bookCard.setAttribute("data-index-number", dataIndex);
+
 }
 
 // helper for addActionButtons
@@ -65,7 +119,8 @@ function addRemoveBtn() {
 
     // add remove icon 
     let removeIcon = document.createElement("i");
-    removeIcon.className = "fas fa-times";
+    removeIcon.classList.add("fas");
+    removeIcon.classList.add("fa-times")
 
     removeBtn.appendChild(removeIcon);
 
@@ -73,12 +128,14 @@ function addRemoveBtn() {
 }
 
 // add action buttons to bookCard
-function addActionButtons(div) {
+function addActionButtons() {
     // add action-buttons class to the div
+    let div = document.createElement("div");
     div.className = "action-buttons";
     
     // add check-read button
     let checkRead = addReadBtn();
+    checkRead.addEventListener("click", toggleRead);
 
     // add remove button
     let remove = addRemoveBtn();
@@ -86,6 +143,8 @@ function addActionButtons(div) {
     // append elements to div
     div.appendChild(checkRead);
     div.appendChild(remove);
+
+    return div;
 }
 
 // create title div with appropriate class names
@@ -136,40 +195,6 @@ function addPages(pageNum) {
     return pagesDiv;
 }
 
-// turn Book objects into cards and display them
-function displayBook() {
-    let mainContainer = document.getElementById("main-container");
-
-    // turn objects in myLibrary array into cards
-    for (i = 0; i < myLibrary.length; i++) {
-        // create a new div with class of book-card
-        let bookCard = document.createElement("div");
-        bookCard.className = "book-card";
-
-        // add action buttons to bookCard 
-        let actionBtnDiv = document.createElement("div");
-        addActionButtons(actionBtnDiv);
-
-        // add book info to bookCard
-        let title = addTitle(myLibrary[i].title);
-
-        let byWord = addByWord();
-
-        let author = addAuthor(myLibrary[i].author);
-
-        let pages = addPages(myLibrary[i].numPages);
-
-
-        // append everything together
-        bookCard.appendChild(actionBtnDiv);
-        bookCard.appendChild(title);
-        bookCard.appendChild(byWord);
-        bookCard.appendChild(author);
-        bookCard.appendChild(pages);
-        mainContainer.appendChild(bookCard);
-    }
-}
-
 
 // action buttons interaction 
 
@@ -196,27 +221,21 @@ function toggleRead(e) {
         }, 300);
     }
 }
- 
-let checkButtons = document.getElementsByClassName("check-read");
-
-for (i = 0; i < checkButtons.length; i++) {
-    checkButtons[i].addEventListener("click", toggleRead);
-}
 
 
-// remove book function 
+// remove book function
+
+/*
 function removeBookCard(e) {
-    let bookCard = e.target.parentNode.parentNode.parentNode;
-    bookCard.parentNode.removeChild(bookCard);
-}
-
-
-// remove book card button
-let removeButtons = document.getElementsByClassName("remove");
-
-for (i = 0; i < removeButtons.length; i++) {
-    removeButtons[i].addEventListener("click", removeBookCard);
-}
+    // remove from display
+    let currentItem = e.target.parentElement.parentElement.parentElement;
+    currentItem.parentElement.removeChild(currentItem);
+    
+    // remove from myLibrary array 
+    let index = currentItem.dataset.indexNumber;
+    myLibrary.splice(index, 1);
+    console.log(myLibrary);
+}*/
 
 // modal action
 let modal = document.getElementById("modal");
@@ -236,6 +255,21 @@ function openModal() {
 
 function closeModal() {
     modal.style.display = "none";
+    resetModal();
+}
+
+function resetModal() {
+    // reset text fields 
+    let textInputs = document.getElementsByClassName("text-input");
+    for (i = 0; i < textInputs.length; i++) {
+        textInputs[i].value = "";
+    }
+
+    // reset radio buttons 
+    let radioBtns = document.getElementsByClassName("radio-btns");
+    for (i = 0; i < radioBtns.length; i++) {
+        radioBtns[i].checked = false;
+    }
 }
 
 modalBtn.addEventListener("click", openModal);
@@ -253,5 +287,3 @@ function styleInputField() {
 function clearField(e) {
     e.target.style.color = "black";
 }
-
-console.log(myLibrary);
