@@ -392,7 +392,6 @@ input[type="radio"] {
     }
 }
 
-
 @media screen and (max-width: 600px) {
     .add-book {
         display: none;
@@ -422,5 +421,4 @@ input[type="radio"] {
         grid-template-columns: 90%;
         justify-content: center;
     }
-
 }
