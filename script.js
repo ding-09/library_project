@@ -1,6 +1,7 @@
 // book objects are going to be stored in myLibrary array
 let myLibrary = [];
 
+// remove bookcards when X is clicked
 let mainContainer = document.getElementById("main-container");
 mainContainer.addEventListener("click", function(e) {
     if (e.target.classList.contains("fa-times")) {
@@ -71,13 +72,15 @@ function displayBook(userTitle, userAuthor, userPages, bookRead, dataIndex) {
     bookCard.className = "book-card";
 
     // add action buttons to bookCard 
-    let actionBtnDiv = addActionButtons();
+    let actionBtnDiv = addActionButtons(bookRead);
 
     // add book info to bookCard
     let title = addTitle(userTitle);
     let byWord = addByWord();
     let author = addAuthor(userAuthor);
     let pages = addPages(userPages);
+
+    // if book is unread, leave button untouched. if read, toggle on read class
 
 
     // append everything together
@@ -94,20 +97,31 @@ function displayBook(userTitle, userAuthor, userPages, bookRead, dataIndex) {
 }
 
 // helper for addActionButtons
-function addReadBtn() {
+function addReadBtn(bookRead) {
+    let readStatus = bookRead;
+
+    let tooltip = document.createElement("span");
+
     let checkRead = document.createElement("button");
     checkRead.className = "check-read";
+
 
     // add read icon 
     let checkIcon = document.createElement("i");
     checkIcon.className = "fas fa-check-circle";
 
-    let tooltip = document.createElement("span");
-    tooltip.textContent = "Toggle read";
-    tooltip.className = "tooltiptext";
+    checkRead.appendChild(checkIcon);
+
+    // mark icon as read/orange if status is read/true
+    if (readStatus) {
+        checkRead.firstElementChild.classList.add("toggle-read-on");
+    } else {
+        tooltip.textContent = "Toggle read";
+        tooltip.className = "tooltiptext";
+    }
 
     checkIcon.appendChild(tooltip);
-    checkRead.appendChild(checkIcon);
+
 
     return checkRead;
 }
@@ -128,13 +142,13 @@ function addRemoveBtn() {
 }
 
 // add action buttons to bookCard
-function addActionButtons() {
+function addActionButtons(bookRead) {
     // add action-buttons class to the div
     let div = document.createElement("div");
     div.className = "action-buttons";
     
     // add check-read button
-    let checkRead = addReadBtn();
+    let checkRead = addReadBtn(bookRead);
     checkRead.addEventListener("click", toggleRead);
 
     // add remove button
@@ -241,7 +255,7 @@ function removeBookCard(e) {
 let modal = document.getElementById("modal");
 
 // modal button 
-let modalBtn = document.getElementById("add-book-btn");
+let modalBtns = document.getElementsByClassName("add-book-button");
 
 // cancel modal button 
 let cancelBtn = document.getElementById("cancel-add-book");
@@ -272,7 +286,10 @@ function resetModal() {
     }
 }
 
-modalBtn.addEventListener("click", openModal);
+// modalBtn.addEventListener("click", openModal);
+for (i = 0; i < modalBtns.length; i++) {
+    modalBtns[i].addEventListener("click", openModal);
+}
 
 cancelBtn.addEventListener("click", closeModal);
 
@@ -287,3 +304,5 @@ function styleInputField() {
 function clearField(e) {
     e.target.style.color = "black";
 }
+
+

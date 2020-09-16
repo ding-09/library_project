@@ -54,6 +54,24 @@ h1 {
     cursor: pointer;
 }
 
+.responsive-add-book {
+    display: block;
+    margin: 0 auto;
+    margin-top: 50px;
+    width: 260px;
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: #75da5f;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 1px -1px #D3D3D3;
+    outline: none;
+    cursor: pointer;
+}
+
 .add-book:hover {
     background-color: #72c75f;
     outline: none;
@@ -280,6 +298,14 @@ input[type="text"] {
     font-size: 15px;
 }
 
+input[type="text"], select {
+    color: black;
+}
+
+input[type="text"]:focus {
+    color: black;
+}
+
 #radio-label {
     display: block;
     margin-left: 5px;
@@ -321,4 +347,80 @@ input[type="radio"] {
 #submit-book:active {
     box-shadow: 0 1px #C0C0C0;
     transform: translateY(4px);
+}
+
+/* responsive */ 
+
+@media screen and (min-width: 1100px) {
+    .grid-container {
+        grid-template-columns: 25% 25% 25%;
+        grid-gap: 100px 100px;  
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .grid-container {
+        grid-template-columns: 35% 35%;
+    }
+}
+
+@media screen and (min-width: 801px) {
+    .responsive-add-book {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .add-book {
+        display: none; 
+    }
+
+    h1 {
+        margin: 0 auto;
+        width: 250px;
+        padding-left: 15px;
+        font-size: 35px;
+    }
+
+    .header-container {
+        height: 150px;
+    }
+
+    .grid-container {
+        grid-template-columns: 50%;
+        justify-content: center;
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .add-book {
+        display: none;
+    }
+
+    .responsive-add-book {
+        margin-top: 55px;
+        width: 280px;
+    }
+
+    h1 {
+        margin: 0 auto;
+        margin-top: 10px;
+        width: 290px;
+        font-size: 38px;
+        padding-left: 25px;
+    }
+
+    .header-container {
+        height: 170px;
+        margin-bottom: 100px;
+
+    }
+
+    .grid-container {
+        max-width: 300px;
+        grid-template-columns: 90%;
+        justify-content: center;
+    }
+
 }
